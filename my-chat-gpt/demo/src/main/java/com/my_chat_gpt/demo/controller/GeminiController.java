@@ -5,8 +5,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.my_chat_gpt.demo.Service.GeminiService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:5173") // Allow requests from React app running on localhost:3000
 public class GeminiController {
     @Autowired
     GeminiService giminiService; 

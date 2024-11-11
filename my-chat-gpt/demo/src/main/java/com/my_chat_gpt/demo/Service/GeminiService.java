@@ -29,6 +29,7 @@ public class GeminiService {
         // Indicamos que el dato que le estamos enviando es un JSON
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
+        
 
         // Tratamiento del JSON con Jackson
         ObjectMapper objectMapper = new ObjectMapper();
@@ -40,19 +41,20 @@ public class GeminiService {
         contentNode.set("parts", objectMapper.createArrayNode().add(partsNode));
         requestBodyNode.set("contents", objectMapper.createArrayNode().add(contentNode));
 
-        String cuerpoRespuesta;
+        String cuerpoPregunta;
         try {
-            cuerpoRespuesta = objectMapper.writeValueAsString(requestBodyNode);
-            System.out.println(cuerpoRespuesta);
+            cuerpoPregunta = objectMapper.writeValueAsString(requestBodyNode);
+            System.out.println(cuerpoPregunta);
         } catch (Exception e) {
             throw new RuntimeException("Fallamos en construir el JSON", e);
         }
+   
 
         // Realizar la solicitud usando WebClient
         Mono<String> response = webClient.post()
                 .uri(apiURL)
                 .headers(httpHeaders -> httpHeaders.addAll(headers))
-                .body(BodyInserters.fromValue(cuerpoRespuesta))
+                .body(BodyInserters.fromValue(cuerpoPregunta))
                 .retrieve()
                 .onStatus(HttpStatusCode::is4xxClientError, clientResponse -> {
                     return clientResponse.bodyToMono(String.class)
@@ -64,8 +66,9 @@ public class GeminiService {
                 })
                 .bodyToMono(String.class);
 
-        // Bloquear para obtener la respuesta (no recomendado en aplicaciones reactivas)
-        return response.block();
+        // Bloquear para obtener la respuesta (no recomendado en aplicaciones reactivas) 
+        System.out.println(response.block());
+      return response.block();
     }
 }
 
