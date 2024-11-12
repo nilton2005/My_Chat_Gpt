@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:5173") // Allow requests from React app running on localhost:3000
+@CrossOrigin(origins = {"http://localhost:5173", "http://192.168.56.1:3000"}) // Allow requests from React app running on localhost:3000
 public class GeminiController {
     @Autowired
     GeminiService giminiService; 
